@@ -11,7 +11,7 @@
 ## Technologies
 
 * JavaScript
-* jQuery 3.4.0
+* jQuery 3.3.1
 * CSS
 * HTML
 
