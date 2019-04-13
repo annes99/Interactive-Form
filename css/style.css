@@ -141,7 +141,10 @@ button:hover {
 ==================================== */
 
 .is-hidden {
-	display: none;
+	display: inline-block;
+	color: red;
+	font-size: 1rem;
+	padding-left: 10px;
 }
 
 .clearfix::after {

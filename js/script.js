@@ -45,6 +45,7 @@ $(document).ready(function(){
             $("label input[name="+ eventSameTime +"]").attr('disabled', true);
         } else if ($(this).is(":not(:checked)")){
             $("input[name=" + eventSameTime + "]").attr('disabled', false);
+
         }
         });
     };
@@ -77,7 +78,7 @@ $(document).ready(function(){
     });
 
     /****** "Payment Info" section ********/
-    
+
     $('option[value="select_method"]').prop('disabled', 'disabled');
     $('option[value="credit card"]').prop('selected', 'selected');
     const creditCard = $('#credit-card');
@@ -100,11 +101,75 @@ $(document).ready(function(){
         }
     });
 
+    /******* Form validation section ********/
 
+    // changing Name to inline-block
+    $('label[for="name"]').css('display', 'inline-block');
+    $('label[for="mail"]').css('display', 'inline-block');
 
+    const createSpanName = $("<span></span>").attr('class', 'is-hidden');
+    const createSpanMail = $("<span></span>").attr('class', 'is-hidden');
+    const createSpanBox = $("<span></span>").attr('class', 'is-hidden');
+    const createSpanError = $("<span></span>").attr('class', 'is-hidden');
+
+    // name validation
+    $('#name').on("input", function(event) {
+        const text = event.target.value;
+        const showText = text === '';
+        if(showText) {
+            $('label[for="name"]').append(createSpanName.text('Please enter your name'));
+        } else {
+            createSpanName.remove();
+        }
+    }); 
+
+    // real time error messege if email is not correctly formatted
+    $('#mail').on("input", function(event) {
+        const text = event.target.value;
+        const test = /^[^@]+@[^@.]+\.[a-z]+$/i.test(text);
+        if(!test){
+            $('label[for="mail"]').append(createSpanMail.text('Must be valid email'));
+        } else {
+            createSpanMail.remove();
+        }
+    });
+
+    // check for errors, when submit button is clicked
     
+    $('button').on('click', function(event) {
+        
+        let errors = 0;
+        
+        if(total === 0) {
+            $('.activities').find('legend').append(createSpanBox.text('    Please select at least one activity'));
+            errors++;
+        } else {
+            createSpanBox.remove();
+        }
 
+        if ($('#name').val() === '') {
 
+            $('label[for="name"]').append(createSpanName.text('Please enter your name'));
+            errors++;
+        } else {
+            createSpanName.remove();
+        }
+
+        if ($('#mail').val() === '') {
+
+            $('label[for="mail"]').append(createSpanMail.text('Enter valid email'));
+            errors++;
+        } else {
+            createSpanMail.remove();
+        }
+
+        if (errors > 0) {
+            $('.activities').next().append(createSpanError.text('Check for errors'));
+        } else {
+            $('.activities').next().append(createSpanError.text('Great Success!'));
+        }
+        event.preventDefault();
+    });
 }); 
 
 
