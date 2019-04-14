@@ -11,15 +11,17 @@
 ## Technologies
 
 * JavaScript
-* jQuery 3.3.1
+* jQuery 3.4.0
 * CSS
 * HTML
 
 ## Demo
 
-Active demo: 
+Active demo: [Interactive Form](https://annes99.github.io/Interactive-Form/)
 
 ## Screenshot
+
+![Example screenshot](img/ScreenShot.png)
 
 ## Status
 

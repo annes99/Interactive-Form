@@ -9,17 +9,21 @@
 body,
 input,
 button {
- font-family: 'Roboto', sans-serif;
+	font-family: 'Asap', sans-serif; 
 }
 
 body {
   font: 1em/1.5;
-  color: #184f68;
-	background: #accbd9;
+  color: #222d39;
+  /* background: #f1f5f6; */
+  /* background: #e8eeef; */
+  padding-bottom: 32px;
+
 }
 
 header {
 	text-align: center;  
+	text-transform: uppercase;
 }
 
 h1 {
@@ -38,7 +42,11 @@ a {
 
 form {
 	padding: .875em 1.875em 1.875em;
-	background: #85b5ca;
+	/* background: #f1f5f6; */
+	border-radius: 8px;
+	background: #fff;
+	/* border: .5px solid  #222d39; */
+	box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.75);
 }
 
 fieldset,
@@ -60,7 +68,7 @@ button {
 legend {
 	font-weight: 500;
 	padding-top: .5em;
-	border-top: 2px solid #679cb3;
+	border-top: .5px solid #222d39;
 	margin-bottom: 1.125em;
 }
 
@@ -71,28 +79,42 @@ legend {
 }
 
 label {
-	color: #000;
+	color: #222d39;
 	display: block;
 	margin-bottom: .5em;
 }
 
-input,
+label[for="cc-num"],
+label[for="zip"],
+label[for="cvv"],
+label[for="name"],
+label[for="mail"] {
+	display: inline-block;
+}
+
+input {
+	margin-bottom: 1.125em;
+	border-radius: 5px;
+	background: #e8eeef;
+}
 select {
+	padding: 6px;
 	margin-bottom: 1.125em;	
+	background-color: #e8eeef;
 }
 
 input {
 	font-size: 1em;
 	font-weight: 500;
 	padding: .8em;
-	background: #c1deeb;
-	border: 2px solid #c1deeb;
+	/* background: #c1deeb; */
+	border: 1px solid #f1f5f6;  
 	outline: none;
 }
 
 input:focus {
 	background: #fff;
-	border-color: #5e97b0;
+	border-color: #1fb6ff;
 	transition: border-color .4s, background-color .4s;
 }
 
@@ -104,14 +126,14 @@ input[type="radio"] {
 button {
 	color: #fff;
 	padding: .55em 1.25em;
-	background: #22627e;
+	background: #1fb6ff;
+	border-radius: 5px;
 	margin: 1.25em 0 .5em;
 	cursor: pointer;
+	
 }
 
-button:hover {
-	background: #184c62;
-}
+
 
 
 /* ================================= 
@@ -142,9 +164,19 @@ button:hover {
 
 .is-hidden {
 	display: inline-block;
-	color: red;
+	color:#fff;
 	font-size: 1rem;
-	padding-left: 10px;
+	padding-top: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	background-color: #f95849;
+	border-radius: 5px 5px 5px 0px;
+	margin-left: 5px;
+	font-size: .75rem;
+}
+
+.border {
+	border: 1px solid #f95849;
 }
 
 .clearfix::after {
@@ -152,6 +184,16 @@ button:hover {
   display: table;
   clear: both;
 }
+
+.total {
+	color: #1fb6ff;
+	font-weight: 500;
+}
+
+.line-through { 
+	text-decoration: line-through;
+}
+
 
 /* ================================= 
   Media Queries
