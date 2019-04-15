@@ -162,7 +162,7 @@ button {
   Helper Classes
 ==================================== */
 
-.is-hidden {
+.error {
 	display: inline-block;
 	color:#fff;
 	font-size: 1rem;
@@ -190,8 +190,8 @@ button {
 	font-weight: 500;
 }
 
-.line-through { 
-	text-decoration: line-through;
+.no-activities { 
+	color: #e8eeef;
 }
 
 

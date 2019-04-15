@@ -4,9 +4,10 @@
 
 ## Features
 
-* Validating user input
-* Form Validation Messages
-* Form Works Without JavaScript
+* Validating user input only with JavaScript
+* Form validation messages
+* Form provides error messages in real time
+* Form provides error message that changes depending on the error (email)
 
 ## Technologies
 
