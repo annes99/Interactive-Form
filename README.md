@@ -26,7 +26,7 @@ Active demo: [Interactive Form](https://annes99.github.io/Interactive-Form/)
 
 ## Status
 
-Project is: _in progress_
+Project is: _completed_
 
 ## Inspiration
 

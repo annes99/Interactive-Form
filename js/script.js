@@ -2,6 +2,7 @@ $(document).ready(function () {
 
     let totalPrice = 0;
     const $createP = $("<p></p>");
+    // creating span elements for validation fields + adding class="error" for CSS styling and error counting
     const $nameSpan = $("<span></span>").attr('class', 'error');
     const $mailSpan = $("<span></span>").attr('class', 'error');
     const $ccSpan = $("<span></span>").attr('class', 'error');
@@ -33,20 +34,21 @@ $(document).ready(function () {
     });
 
     /***** ”T-Shirt Info” section *******/
-    // at first hiding Color column
+
+    // at first hide Color column
     $('#colors-js-puns').hide();
 
     // based on selection, show correct options
     $("#design").change(function () {
         const $colorOption = $('#color').children('option');
-        const addOption = $("<option disabled selected></option>").text('Choose color');
+        const $addOption = $("<option disabled selected></option>").text('Choose color');
         if ($(this).val() === 'js puns') {
-            $('#color').prepend(addOption);
+            $('#color').prepend($addOption);
             $('#colors-js-puns').show();
             $colorOption.hide();
             $('option[value="cornflowerblue"], option[value="darkslategrey"], option[value="gold"]').show();
         } else if ($(this).val() === 'heart js') {
-            $('#color').prepend(addOption);
+            $('#color').prepend($addOption);
             $('#colors-js-puns').show();
             $colorOption.hide();
             $('option[value="tomato"], option[value="steelblue"], option[value="dimgrey"]').show();
@@ -91,14 +93,14 @@ $(document).ready(function () {
         }
         $('.activities').append($createP);
         if (totalPrice === 0) {
-            $('.activities').find('legend').append($boxSpan.text('Please select at least one activity'));
+            $('.activities').find('legend').append($boxSpan.text('Please select at least one activity').attr('class', 'error err'));
             $createP.remove();
         } else {
             $boxSpan.remove();
         }
     });
 
-    /****** "Payment Info" section ********/
+    /************* "Payment Info" section ****************/
 
     // at first credit card is selected, based on selection proper <div> is showing
     $('option[value="select_method"]').prop('disabled', 'disabled');
@@ -123,125 +125,142 @@ $(document).ready(function () {
         }
     });
 
-    /***** Validation section  *******/
+    /***************  Validation section  ****************/
 
-    // real-time name validation
-    $('#name').on("input", function (event) {
-        const text = event.target.value;
-        const showText = text === '';
-        if (showText) {
-            $('label[for="name"]').append($nameSpan.text('Enter your name'));
+    // function to create error messages, appending error messages to correct label element
+    const showElement = (name, span, text) => {
+        let element = $('label[for="' + name + '"]').append((span).text(text));
+        return element;
+    };
+
+    // function to check if name field is empty, if so show error message
+    const checkName = (text) => {
+        if (text === '') {
+            showElement('name', $nameSpan, 'Enter your name');
         } else {
             $nameSpan.remove();
         }
-    });
-
-    // real-time error messege if email is not correctly formatted + conditional error message
-    $('#mail').on("input", function (event) {
-        const text = event.target.value;
-        const $test = /^[^@]+@[^@.]+\.[a-z]+$/i.test(text);
+    };
+    // function to check if email field is empty or not formated correctly, if so show error message
+    const checkEmail = (text) => {
+        const inputText = text;
+        const $test = /^[^@]+@[^@.]+\.[a-z]+$/i.test(inputText);
         if ($('#mail').val() === '') {
-            $('label[for="mail"]').append($mailSpan.text('Enter your email address'));
+            showElement('mail', $mailSpan, 'Enter your email address');
         } else if (!$test) {
-            $('label[for="mail"]').append($mailSpan.text('Must be valid email'));
+            showElement('mail', $mailSpan, 'Must be valid email');
         } else {
             $mailSpan.remove();
         }
+    };
+    // function to check if credit card field is empty or not formated correctly, if so show error message
+    const checkCC = (text) => {
+        let inputText = text;
+        const $test = /^\d{13,16}$/.test(inputText);
+        if ($('#cc-num').val() === '') {
+            showElement('cc-num', $ccSpan, 'Enter your card number');
+        } else if (!$test) {
+            showElement('cc-num', $ccSpan, 'Must be valid number');
+        } else {
+            $ccSpan.remove();
+        }
+
+    };
+    // function to check if ZIP or CVV field is formated correctly, if not show error message
+    const checkZipAndCvv = (text, test, span, spanName) => {
+        let inputText = text;
+        const $test = test.test(inputText);
+        if (!$test) {
+            span;
+        } else {
+            spanName.remove();
+        }
+    };
+
+    // real-time name validation
+    $('#name').on("input", function (event) {
+        checkName(event.target.value);
+    });
+
+    // real-time e-mail validation + conditional error message
+    $('#mail').on("input", function (event) {
+        checkEmail(event.target.value);
     });
 
     // real-time credit card number validation + conditional error message
     $('#cc-num').on("input", function (event) {
-        let text = event.target.value.replace(/[^0-9]/, '');
-        const $test = /^\d{13,16}$/.test(text);
-        if ($('#cc-num').val() === '') {
-            $('label[for="cc-num"]').append($ccSpan.text('Enter your card number'));
-        } else if (!$test) {
-            $('label[for="cc-num"]').append($ccSpan.text('Must be valid number'));
-        } else {
-            $ccSpan.remove();
-        }
-    });
-    // real-time zip number validation
-    $('#zip').on("input", function (event) {
-        let text = event.target.value.replace(/[ -]+/, '');
-        const $test = /^\d{5}$/.test(text);
-        if (!$test) {
-            $('label[for="zip"]').append($zipSpan.text('5 digits'));
-        } else {
-            $zipSpan.remove();
-        }
-    });
-    // real-time cvv card number validation
-    $('#cvv').on("input", function (event) {
-        let text = event.target.value.replace(/[ -]+/, '');
-        const $test = /^\d{3}$/.test(text);
-        if (!$test) {
-            $('label[for="cvv"]').append($cvvSpan.text('3 digits'));
-        } else {
-            $cvvSpan.remove();
-        }
+        checkCC(event.target.value);
     });
 
-    /******** form submitting section  *******/
+    // real-time zip number validation -- /^\d{5}$/ testing if field contains only 5 digits
+    $('#zip').on("input", function (event) {
+        checkZipAndCvv(event.target.value, /^\d{5}$/, showElement('zip', $zipSpan, '5 digits'), $zipSpan);
+    });
+
+    // real-time cvv card number validation -- /^\d{3}$/ testing if field contains only 3 digits
+    $('#cvv').on("input", function (event) {
+        checkZipAndCvv(event.target.value, /^\d{3}$/, showElement('cvv', $cvvSpan, '3 digits'), $cvvSpan);
+    });
+
+    /******** form submitting section  ***********************/
 
     // check for errors, when submit button is clicked
     $('button').on('click', function (event) {
-        // keeping score of errors
-        let errors = 0;
+        // if credit card IS NOT selected, check all name, email & activities fields for errors
+        if ($('#payment').val() !== 'credit card') {
 
-        // checking if name field is empty, if so show error
-        if ($('#name').val() === '') {
-            $('label[for="name"]').append($nameSpan.text('Enter your name'));
-            errors++;
-        } else {
-            $nameSpan.remove();
-        }
-        // checking if mail field is empty, if so show error
-        if ($('#mail').val() === '') {
-            $('label[for="mail"]').append($mailSpan.text('Enter valid email'));
-            errors++;
-        } else {
-            $mailSpan.remove();
-        }
-        // checking if price for activities is 0, if so show error "no activities selected"
-        if (totalPrice === 0) {
-            $('.activities').find('legend').append($boxSpan.text('Please select at least one activity'));
-            errors++;
-        } else {
-            $boxSpan.remove();
-        }
-        // checking credit card, if either card, zip or cvv field is empty, so show error
-        $('option[value="credit card"]').each(function () {
-            if (this.selected) {
-                if ($('#cc-num').val() === '') {
-                    $('label[for="cc-num"]').append($ccSpan.text('Enter valid number 13-16'));
-                    errors++;
-                } else {
-                    $ccSpan.remove();
-                }
-                // zip
-                if ($('#zip').val() === '') {
-                    $('label[for="zip"]').append($zipSpan.text('5 digits'));
-                    errors++;
-                } else {
-                    $zipSpan.remove();
-                }
-                //cvv
-                if ($('#cvv').val() === '') {
-                    $('label[for="cvv"]').append($cvvSpan.text('3 digits'));
-                    errors++;
-                } else {
-                    $cvvSpan.remove();
-                }
+            // checking if name field is empty, if so show error 
+            checkName($('#name').val());
+
+            // checking if mail field is formated correctly, if not, so show error 
+            checkEmail($('#mail').val());
+
+            // checking if price for activities is 0, if true, show error "no activities selected"
+            if (totalPrice === 0) {
+                $('.activities').find('legend').append($boxSpan.text('Please select at least one activity').attr('class', 'error'));
+            } else {
+                $boxSpan.remove();
             }
-        });
-        // if theres errors alert shows, if no errors registration is succsessful 
-        if (errors > 0) {
-            alert('Check errors!');
-            event.preventDefault();
-        } else {
-            alert('We have received your registration. Thank you!');
-            $('button').submit();
+            // checking if name, email & activities fields have a class="err", if so show error
+            if ($("[for='name'], [for='mail'], .activities").find('.error').length > 0) {
+                alert('Check errors!');
+                event.preventDefault();
+            } else {
+                alert('We have received your registration. Thank you!');
+                $('button').submit();
+            }
+        }
+      
+        // if credit card IS selected, check all fields for errors
+        if ($('#payment').val() === 'credit card') {
+
+            // checking if name field is empty, if so show error 
+            checkName($('#name').val());
+            // checking if mail field is formated correctly, if not, so show error 
+            checkEmail($('#mail').val());
+
+            // checking if price for activities is 0, if true, show error "no activities selected"
+            if (totalPrice === 0) {
+                $('.activities').find('legend').append($boxSpan.text('Please select at least one activity').attr('class', 'error err'));
+            } else {
+                $boxSpan.remove();
+            }
+
+            // check credit card
+            checkCC($('#cc-num').val());
+            // check ZIP
+            checkZipAndCvv($('#zip').val(), /^\d{5}$/, showElement('zip', $zipSpan, '5 digits'), $zipSpan);
+            // check CVV
+            checkZipAndCvv($('#cvv').val(), /^\d{3}$/, showElement('cvv', $cvvSpan, '3 digits'), $cvvSpan);
+            
+            // checking if any field have a class="err", if so show error, if not registration is succsess
+            if ($('form').find('.error').length > 0) {
+                alert('Check errors!');
+                event.preventDefault();
+            } else {
+                alert('We have received your registration. Thank you!');
+                $('button').submit();
+            }
         }
     });
 });
